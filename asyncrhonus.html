@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fetch API example</title>
+
+    <style>
+        ul {
+            margin-bottom: 70;
+            background-color: aquamarine;
+            list-style: none;
+            display: flex;
+            padding: 10;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>fetch api example</h1>
+
+    <button id="btn-fetch">Get Users</button>
+
+    <form method="POST" id="addUser">
+        <input type="text" id="name" placeholder="name">
+        <br>
+        <input type="number" id="id" placeholder="id">
+        <input type="submit" value="Submit">
+
+        <input type="file" name="upload" id="uploadFile">
+    </form>
+
+    <div id='body'></div>
+
+    <script>
+        const url = 'https://jsonplaceholder.typicode.com/users';
+
+        let getUsers = () => {
+            fetch(url)
+                .then((hasil) => hasil.json())
+                .then((hasil) => {
+
+                    hasil.forEach(user => {
+                        let output = document.createElement('div');
+                        output.innerHTML = `
+                        <div>
+                            <ul>
+                                <li>${user.name}</li>
+                                <li>${user.id}</li>
+                            </ul>
+                        </div>
+                        `;
+                        document.querySelector('#body').appendChild(output);
+                    });
+                });
+        }
+
+
+        document.querySelector('#btn-fetch').addEventListener('click', getUsers);
+
+        document.querySelector('#addUser').addEventListener('submit', addFile);
+
+        function addFile(e) {
+            e.preventDefault();
+            const data = { name: 'rick', ok: '1' };
+
+            fetch('users.json', {
+                // method: 'POST',
+                // headers: { 'Content-Type': 'application/json' },
+                // body: JSON.stringify(data)
+                method: 'DELETE', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+                .then(res => res.json())
+                .then(data => console.log(data))
+        }
+
+
+
+    </script>
+</body>
+
+</html>
