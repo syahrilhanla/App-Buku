@@ -1,9 +1,16 @@
 <?php
 
-header('Content-Type: application/json');
+// fetching data from database and connect it to fetchAPI.js
 
-$data = [
-    'viewCount' => (time() %1000 ) * 3
-];
+$conn = mysqli_connect('localhost', 'root', '', 'bookapp');
 
-echo json_encode($data);
+$query = 'SELECT * FROM booklist';
+
+$result = mysqli_query($conn, $query);
+
+$data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+
+exit(json_encode($data));
+
+

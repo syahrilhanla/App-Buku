@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test form</title>
+</head>
+
+<body>
+
+    <form action="insertData.php" method="post" id="forming">
+        <input type="text" name="title" id="title" placeholder="title">
+        <input type="text" name="isbn" id="isbn" placeholder="isbn">
+        <input type="submit" value="submit">
+    </form>
+
+    <script>
+
+        document.querySelector('#forming').addEventListener('submit', e => {
+            e.preventDefault();
+            const form = document.querySelector('#forming');
+            const data = new URLSearchParams();
+
+            for (const i of new FormData(form)) {
+                data.append(i[0], i[1]);
+            }
+
+            fetch('insertData.php', {
+                method: 'POST',
+                body: data
+            })
+                .then(res => res.text())
+                .then(data => console.log(data));
+        })
+
+        // fetch('data.php')
+        //     .then(res => res.json())
+        //     .then(data => console.log(data))
+        //     .catch(error => console.log(error));
+    </script>
+</body>
+
+</html>
