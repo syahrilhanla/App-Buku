@@ -3,6 +3,10 @@
 // created by Syahril Hanla, July 6th 2020
 // Copyright 2020
 
+// last progress note: 
+// 1. self refresh after submit not working
+// 2. API for matching title has finished
+// 3. codes a little bit maintained and organized
 
 // burger menu event
 
