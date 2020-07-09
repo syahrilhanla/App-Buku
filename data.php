@@ -10,7 +10,6 @@ $result = mysqli_query($conn, $query);
 
 $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-
 exit(json_encode($data));
 
 
