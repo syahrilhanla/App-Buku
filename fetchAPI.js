@@ -4,11 +4,15 @@
 // Copyright 2020
 
 // last progress note: 
-// 1. self refresh after submit not working
-// 2. API for matching title has finished
-// 3. codes a little bit maintained and organized
+// 1. book can already be looked in search feature, and display like expected
+// 2. self refresh on submit already worked
+// 3. function divided to smaller pieces
 
-// burger menu event
+// on progress/todo note:
+// 1. add refresh button after searching books
+// 2. adjust display for default and search feature
+
+// hamburger menu event
 
 let condition = false;
 const button = document.querySelector('#ok');
@@ -46,15 +50,32 @@ class API {
     }
 
     static searchingMatches = (data, searchData) => {
+        const results = [];
+        let finished;
+
         data.filter((result) => {
-            if (result.title == searchData) {
-                console.log('mantap yoa');
+            const title = result.title.toUpperCase();
+            const search = searchData.toUpperCase();
+            if (title == search) {
+                console.log('Book found!');
+                UI.showAlert('Book found!', 'success');
+                // needs to be array first to use UI.diplayData
+                results.push(result);
+                console.log(results);
+                // only display book(s) that's found
+                UI.removeCurrentList();
+                UI.displayData(results);
+                finished = true;
+            } else if (!finished) {
+                console.log('Book not found!');
+                UI.showAlert('Book not found!', 'danger');
             }
         });
     }
 }
 
 class UI {
+    // this function needs to use array
     static displayData = (data) => {
         const table = document.querySelector('#nomnom');
         table.style.display = '';
@@ -108,15 +129,16 @@ class UI {
         }, 3000);
     }
 
-
-    // bug: still cannot refresh by itself after posting data
-    static refreshDisplay = async () => {
+    static removeCurrentList = () => {
         let tds = document.querySelectorAll('td');
-        await tds.forEach(data => data.remove());
-        await API.toGET('data.php')
-            .then(data => {
-                UI.displayData(data);
-            });
+        tds.forEach(data => data.remove());
+    }
+
+    static refreshDisplay = () => {
+        UI.removeCurrentList();
+        setTimeout(() => {
+            API.toGET('data.php').then(data => UI.displayData(data))
+        }, 100);
     }
 }
 
